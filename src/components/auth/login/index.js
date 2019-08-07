@@ -17,11 +17,9 @@ class Login extends React.Component {
     data.append('code', code.code);
     data.append('client_id', CLIENT_ID);
     data.append('client_secret', SECRET_ID);
-
     axios.post(LOGIN_WITH_CODE, data)
       .then((res) => {
         let access_token = res.data.split('&')[0].split('=')[1]
-        console.log(access_token)
         this.props.dispatch(auth_success({ access_token }))
       })
       .catch((err) => {
