@@ -1,0 +1,7 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 5px 60px;
+	background-color: aliceblue;
+}

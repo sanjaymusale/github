@@ -1,0 +1,8 @@
+.gist_profile {
+	display: flex;
+	justify-content: space-between;
+}
+
+.gist_profile .profile {
+	display: flex;
+}
