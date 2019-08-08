@@ -13,6 +13,7 @@ class NavBar extends React.Component {
           {this.props.token ?
             <>
               <Link className="link" to='/listall'>Repositories</Link>
+              <Link className="link" to='/star-gist'>Starred Gist</Link>
               <Link className="link" to='/create'>Create</Link>
               <Link className="link" to='/logout'>Logout</Link>
             </>

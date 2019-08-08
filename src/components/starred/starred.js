@@ -6,7 +6,6 @@ import "brace/mode/javascript";
 import "brace/theme/github";
 import { connect } from 'react-redux'
 import axios from 'axios'
-import './list-all.css'
 
 class ListAll extends React.Component {
   constructor() {
@@ -15,7 +14,6 @@ class ListAll extends React.Component {
       data: [],
       results: [],
     }
-    this.x = []
   }
 
   componentDidMount() {
@@ -24,7 +22,7 @@ class ListAll extends React.Component {
         "Authorization": `token ${this.props.access_token}`
       }
     }
-    axios.get(GIST, config)
+    axios.get(`${GIST}/starred`, config)
       .then((res) => {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(config)
@@ -74,12 +72,7 @@ class ListAll extends React.Component {
               </div>
             </div>
             <div>
-              {/* <div>
-                {code.map((code, index) => {
-                  return <p key={index}><code>{code}</code></p>
-                })
-                }
-              </div> */}
+
               <AceEditor
                 mode="javascript"
                 theme="github"
