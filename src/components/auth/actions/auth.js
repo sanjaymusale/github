@@ -4,3 +4,9 @@ export const auth_success = (data) => {
     payload: data
   }
 }
+
+export const logout_success = () => {
+  return {
+    type: 'LOGOUT_SUCCESS',
+  }
+}
