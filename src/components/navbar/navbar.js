@@ -10,7 +10,7 @@ class NavBar extends React.Component {
       <div className="navbar">
         <div className="header container">
           <h2>Gist Clone</h2>
-          <div>
+          <div className="nav-link">
             {this.props.token ?
               <>
                 <Link className="link" to='/create'>Create</Link>

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { LOGIN_WITH_CODE, USER_DETAILS } from '../../../constants/url'
+
 export const auth_pending = () => (dispatch) => {
   dispatch({
     type: 'AUTH_PENDING'
@@ -16,12 +17,6 @@ export const logout_success = () => (dispatch) => {
   dispatch({
     type: 'LOGOUT_SUCCESS',
   })
-}
-
-export const login_failure = () => {
-  return {
-    type: 'LOGIN_FAILURE'
-  }
 }
 
 export const auth_error = () => (dispatch) => {

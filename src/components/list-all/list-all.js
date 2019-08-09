@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Loader from '../../components/loader'
-import { GIST } from '../../constants/url'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
 import "brace/theme/github";
@@ -20,12 +19,13 @@ class ListAll extends React.Component {
   }
 
   componentDidMount() {
+    const { url } = this.props
     const config = {
       headers: {
         "Authorization": `token ${this.props.access_token}`
       }
     }
-    axios.get(GIST, config)
+    axios.get(url, config)
       .then((res) => {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(config)
@@ -97,7 +97,8 @@ class ListAll extends React.Component {
 }
 
 ListAll.propTypes = {
-  access_token: PropTypes.string.isRequired
+  access_token: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired
 }
 
 export default connect((state) => {

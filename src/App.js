@@ -3,13 +3,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Loading from '../src/components/loader'
 import AppLayout from './AppLayout';
 import NavBar from './components/navbar/navbar';
-const ListAll = lazy(() => import('./components/list-all/list-all'))
+const AllGist = lazy(() => import('./components/list-all/gists'))
 const CreateGist = lazy(() => import('./components/create/createGist'))
 const Login = lazy(() => import('./components/auth/login'));
 const Logout = lazy(() => import('./components/auth/logout'))
 const Gist = lazy(() => import('./components/gist/gist'))
 const EditGist = lazy(() => import('./components/create/editGist'));
-const Starred = lazy(() => import('./components/starred/starred'));
+const Starred = lazy(() => import('./components/list-all/starred'));
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           <Switch>
             <Route path='/login' component={Login} exact />
             <Route path='/logout' component={Logout} exact />
-            <Route path='/listall' component={ListAll} exact />
+            <Route path='/listall' component={AllGist} exact />
             <Route path='/gist/:id' component={Gist} exact />
             <Route path='/create' component={CreateGist} exact />
             <Route path='/gist/current/edit' component={EditGist} exact />

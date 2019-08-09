@@ -6,6 +6,7 @@ export default function Loader() {
   return (
     <div className="loader">
       <img src={Loading} alt="Loading..."></img>
+      <h4>Processing...</h4>
     </div>
   )
 }
