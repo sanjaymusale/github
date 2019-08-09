@@ -4,11 +4,13 @@ import { logout_success } from '../actions/auth'
 
 function Logout(props) {
   (() => {
-    props.dispatch(logout_success())
+    props.logout_success()
   })()
 
   return (<></>)
 }
 
-
-export default connect()(Logout)
+const mapDispatchToProps = {
+  logout_success
+}
+export default connect(null, mapDispatchToProps)(Logout)

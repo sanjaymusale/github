@@ -1,9 +1,16 @@
-.header {
+.navbar {
+	width: 100%;
+	background: aliceblue;
+	position: fixed;
+	z-index: 2;
+	height: 67px;
+}
+
+.navbar .header {
 	display: flex;
 	justify-content: space-between;
-	align-items: baseline;
-	padding: 5px 60px;
-	background-color: aliceblue;
+	align-items: center;
+	padding: 15px;
 }
 
 .link {

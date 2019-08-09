@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Loader from '../../components/loader'
 import { GIST } from '../../constants/url'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
@@ -15,7 +17,6 @@ class ListAll extends React.Component {
       data: [],
       results: [],
     }
-    this.x = []
   }
 
   componentDidMount() {
@@ -56,30 +57,25 @@ class ListAll extends React.Component {
   }
 
   render() {
-    console.log(this.state.results)
-    return (
-      <div>
+    const { results } = this.state
+    if (!results.length)
+      return <Loader />
 
-        {this.state.results.length !== 0 && this.state.results.slice(0, 3).map((item, index) => {
+    return (
+      <div className="load_all">
+        {this.state.results.map((item, index) => {
           let fileKey = Object.keys(item.files)
-          let code = item.files[fileKey].content.slice(0, 200)
-          return <div key={index}>
-            <div className="gist_profile">
-              <div className="profile">
-                <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
-                <div>
-                  <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
-                  <p>created 1 hour ago</p>
-                </div>
+          let code = item.files[fileKey].content
+          return <div key={index} className="single_gist">
+            <div className="profile">
+              <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
+              <div>
+                <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
+                <p>created 1 hour ago</p>
               </div>
             </div>
+
             <div>
-              {/* <div>
-                {code.map((code, index) => {
-                  return <p key={index}><code>{code}</code></p>
-                })
-                }
-              </div> */}
               <AceEditor
                 mode="javascript"
                 theme="github"
@@ -87,7 +83,7 @@ class ListAll extends React.Component {
                 maxLines={5}
                 editorProps={{ $blockScrolling: true }}
                 readOnly={true}
-                name="UNIQUE_ID_OF_DIV"
+                name="ace_editor"
                 value={code}
               />
             </div>
@@ -98,6 +94,10 @@ class ListAll extends React.Component {
       </div>
     )
   }
+}
+
+ListAll.propTypes = {
+  access_token: PropTypes.string.isRequired
 }
 
 export default connect((state) => {

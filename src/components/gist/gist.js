@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { GIST } from '../../constants/url'
 import AceEditor from 'react-ace';
@@ -81,6 +82,10 @@ class Gist extends React.Component {
       </div>
     )
   }
+}
+
+Gist.propTypes = {
+  access_token: PropTypes.string.isRequired
 }
 
 export default connect((state) => {

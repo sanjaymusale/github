@@ -1,6 +1,7 @@
 import React from 'react'
 import './createGist.css'
 import axios from 'axios'
+import PropTypes from 'prop-types';
 import GistForm from './form'
 import { GIST } from '../../constants/url'
 import { connect } from 'react-redux'
@@ -32,24 +33,25 @@ function EditGist(props) {
         "Authorization": `token ${access_token}`
       }
     }
-    // console.log(config)
+
     axios.patch(`${GIST}/${currentGist.id}`, data, config)
       .then((res) => {
-        console.log(res)
         props.history.push(`/gist/${currentGist.id}`)
-        // return <Redirect to={`/gist`} />
 
       })
       .catch((err) => {
         console.log(err)
       })
-    console.log(data)
   }
 
   return (
     <GistForm submit={submit} title="Edit code snippets" action="Edit" data={currentGist} />
   )
 
+}
+
+EditGist.propTypes = {
+  access_token: PropTypes.string.isRequired
 }
 
 export default connect((state) => {

@@ -1,5 +1,6 @@
 import React from 'react'
 import './createGist.css'
+import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
 import "brace/theme/monokai";
@@ -24,12 +25,14 @@ export default class GistForm extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="form-display">
         <div>
           <h3>{this.props.title}</h3>
         </div>
-        <input type="text" placeholder="description" name="description" onChange={this.change} value={this.state.description} />
-        <input type="text" placeholder="filename" name="filename" onChange={this.change} value={this.state.filename} />
+        <div>
+          <input type="text" placeholder="description" name="description" onChange={this.change} value={this.state.description} />
+          <input type="text" placeholder="filename" name="filename" onChange={this.change} value={this.state.filename} />
+        </div>
         <div>
           <AceEditor
             mode="javascript"
@@ -41,9 +44,16 @@ export default class GistForm extends React.Component {
             setOptions={{ useWorker: false }}
           />
         </div>
-        <button onClick={() => this.props.submit(this.state)}>{this.props.action}</button>
+        <button onClick={() => this.props.submit(this.state)} className="button">{this.props.action}</button>
 
       </div>
     )
   }
+}
+
+GistForm.propTypes = {
+  submit: PropTypes.func.isRequired,
+  action: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  data: PropTypes.object
 }

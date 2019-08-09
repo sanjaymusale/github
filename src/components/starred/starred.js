@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import { GIST } from '../../constants/url'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
@@ -7,7 +8,7 @@ import "brace/theme/github";
 import { connect } from 'react-redux'
 import axios from 'axios'
 
-class ListAll extends React.Component {
+class Starred extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -39,9 +40,7 @@ class ListAll extends React.Component {
     const { data } = this.state
 
     const promises = data.map(async repo => {
-
       const response = await axios.get(repo.url, config)
-
       return response.data
 
     })
@@ -58,9 +57,9 @@ class ListAll extends React.Component {
     return (
       <div>
 
-        {this.state.results.length !== 0 && this.state.results.slice(0, 3).map((item, index) => {
+        {this.state.results.length !== 0 && this.state.results.map((item, index) => {
           let fileKey = Object.keys(item.files)
-          let code = item.files[fileKey].content.slice(0, 200)
+          let code = item.files[fileKey].content
           return <div key={index}>
             <div className="gist_profile">
               <div className="profile">
@@ -72,7 +71,6 @@ class ListAll extends React.Component {
               </div>
             </div>
             <div>
-
               <AceEditor
                 mode="javascript"
                 theme="github"
@@ -93,8 +91,12 @@ class ListAll extends React.Component {
   }
 }
 
+Starred.propTypes = {
+  access_token: PropTypes.string.isRequired
+}
+
 export default connect((state) => {
   return {
     access_token: state.Auth.access_token
   }
-})(ListAll)
+})(Starred)
