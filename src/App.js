@@ -18,7 +18,7 @@ function App() {
       <AppLayout>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route path='/login' component={Login} exact />
+            <Route path='/login' component={Login} />
             <Route path='/logout' component={Logout} exact />
             <Route path='/listall' component={AllGist} exact />
             <Route path='/gist/:id' component={Gist} exact />
