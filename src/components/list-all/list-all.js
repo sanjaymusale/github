@@ -126,7 +126,8 @@ class ListAll extends React.Component {
             <div>
               <Editor
                 file={Object.keys(item.files)[0]}
-                maxLines={5}
+                maxLines={4}
+                useWrapMode={true}
                 readOnly={true}
                 name="ace_editor"
                 value={code}

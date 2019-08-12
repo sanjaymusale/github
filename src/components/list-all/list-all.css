@@ -46,6 +46,14 @@
 
 .ace_editor {
 	margin-top: 15px;
+	overflow: hidden;
+}
+
+.ace_scrollbar-v {
+	display: none !important;
+}
+.ace_scrollbar-h {
+	display: none !important;
 }
 
 @media screen and (max-width: 425px) {

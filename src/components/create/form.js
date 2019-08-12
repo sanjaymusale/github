@@ -2,7 +2,7 @@ import React from 'react'
 import './createGist.css'
 import PropTypes from 'prop-types';
 import Editor from '../editor'
-import { Extensions } from '../helper'
+// import { Extensions } from '../helper'
 export default class GistForm extends React.Component {
   constructor(props) {
     super(props)
@@ -10,20 +10,17 @@ export default class GistForm extends React.Component {
       snippets: props.data ? props.data.content : '',
       description: props.data ? props.data.description : '',
       filename: props.filename || '',
-      error: {
-        invalid: false
-      }
     }
   }
 
-  validExtensions = () => {
-    const { filename } = this.state
-    const ext = filename.split('.')[1]
-    const valid = Extensions[ext] ? true : false
-    this.setState({
-      error: { valid }
-    })
-  }
+  // validExtensions = () => {
+  //   const { filename } = this.state
+  //   const ext = filename.split('.')[1]
+  //   const valid = Extensions[ext] ? true : false
+  //   this.setState({
+  //     error: { valid }
+  //   })
+  // }
 
   change = (e) => {
     this.setState({ [e.target.name]: e.target.value }, () => {
@@ -36,8 +33,8 @@ export default class GistForm extends React.Component {
   }
 
   render() {
-    const { error: { valid } } = this.state
-    console.log(valid)
+    // const { error: { valid } } = this.state
+    // console.log(valid)
     return (
       <div className="form-display">
         <div className="form">
@@ -47,7 +44,7 @@ export default class GistForm extends React.Component {
           <div>
             <input type="text" placeholder="description" name="description" onChange={this.change} value={this.state.description} />
             <input type="text" placeholder="filename" name="filename" onChange={this.change} value={this.state.filename} />
-            {this.state.error.valid || <p style={{ "color": "red", "fontSize": "10px" }}>Invalid Extension</p>}
+            {/* {this.state.error.valid || <p style={{ "color": "red", "fontSize": "10px" }}>Invalid Extension</p>} */}
           </div>
           <div>
             <Editor
@@ -58,7 +55,7 @@ export default class GistForm extends React.Component {
               name="ace_editor"
             />
           </div>
-          <button disabled={!valid} onClick={() => this.props.submit(this.state)} className="button">{this.props.action}</button>
+          <button onClick={() => this.props.submit(this.state)} className="button">{this.props.action}</button>
         </div>
       </div >
     )
