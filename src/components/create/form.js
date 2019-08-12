@@ -1,9 +1,7 @@
 import React from 'react'
 import './createGist.css'
 import PropTypes from 'prop-types';
-import AceEditor from 'react-ace';
-import "brace/mode/javascript";
-import "brace/theme/monokai";
+import Editor from '../editor'
 
 export default class GistForm extends React.Component {
   constructor(props) {
@@ -11,7 +9,7 @@ export default class GistForm extends React.Component {
     this.state = {
       snippets: props.data ? props.data.content : '',
       description: props.data ? props.data.description : '',
-      filename: ''
+      filename: props.filename || ''
     }
   }
 
@@ -34,14 +32,12 @@ export default class GistForm extends React.Component {
           <input type="text" placeholder="filename" name="filename" onChange={this.change} value={this.state.filename} />
         </div>
         <div>
-          <AceEditor
-            mode="javascript"
-            theme="monokai"
-            height="200px"
+          <Editor
+            file={this.state.filename || "code_snippet.js"}
             onChange={this.code}
-            name="ace_editor"
             value={this.state.snippets}
-            setOptions={{ useWorker: false }}
+            height="200px"
+            name="ace_editor"
           />
         </div>
         <button onClick={() => this.props.submit(this.state)} className="button">{this.props.action}</button>

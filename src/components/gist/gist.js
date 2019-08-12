@@ -4,10 +4,15 @@ import { Link } from 'react-router-dom'
 import { GIST } from '../../constants/url'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
-import "brace/theme/github";
+import "brace/mode/ruby";
+import "brace/mode/java";
+import "brace/mode/html";
+import "brace/theme/xcode";
 import { connect } from 'react-redux'
 import axios from 'axios'
 import './gist.css'
+import Loader from '../loader';
+import { getExtension } from '../helper'
 
 class Gist extends React.Component {
   constructor() {
@@ -30,7 +35,7 @@ class Gist extends React.Component {
     axios.get(`${GIST}/${id}`, config)
       .then((res) => {
         this.setState({ data: res.data, isLoaded: true })
-        console.log('gist', res.data)
+        // console.log('gist', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -38,48 +43,47 @@ class Gist extends React.Component {
   }
 
   render() {
-    // console.log(this.state.data)
-    return (
-      <div>
+    const { isLoaded, data } = this.state
+    if (!isLoaded)
+      return <Loader />
 
-        {this.state.isLoaded &&
-          // let fileKey = Object.keys(this.state.data.files)
-          // let code = this.state.data.files[fileKey].content.slice(0, 200)
-          <div style={{ width: "70%" }}>
-            <div className="gist_profile">
-              <div className="profile">
-                <img alt="" src={this.state.data.owner.avatar_url} height="35px" width="35px" />
-                <div>
-                  <p>{this.state.data.owner.login} / {Object.keys(this.state.data.files)}</p>
-                  <p>created 1 hour ago</p>
-                </div>
-              </div>
+    return (
+      <div className="card">
+        <div className="gist">
+          <div className="gist_profile">
+            <div className="profile">
+              <img alt="" src={this.state.data.owner.avatar_url} height="35px" width="35px" />
               <div>
-                <button>
-                  <Link to={{
-                    pathname: `/gist/current/edit`,
-                    state: {
-                      data: this.state.data
-                    }
-                  }} className="link">Edit</Link></button>
+                <p>{this.state.data.owner.login} / {Object.keys(this.state.data.files)}</p>
+                <p>created 1 hour ago</p>
               </div>
             </div>
             <div>
-              <AceEditor
-                mode="javascript"
-                theme="github"
-                width="100%"
-                maxLines={5}
-                editorProps={{ $blockScrolling: true }}
-                readOnly={true}
-                name="UNIQUE_ID_OF_DIV"
-                setOptions={{ useWorker: false }}
-                value={this.state.data.files[Object.keys(this.state.data.files)].content}
-              />
+
+              <Link to={{
+                pathname: `/gist/current/edit`,
+                state: {
+                  data: this.state.data
+                }
+              }}><button className="edit">edit</button></Link>
+              {/* <Link to={`/gist/edit/${data.id}`}><button className="edit">edit</button></Link> */}
             </div>
           </div>
-        }
-      </div>
+          <div>
+            <AceEditor
+              mode={getExtension(Object.keys(this.state.data.files))}
+              theme="xcode"
+              width="100%"
+              maxLines={5}
+              editorProps={{ $blockScrolling: true }}
+              readOnly={true}
+              name="Edit_editor"
+              setOptions={{ useWorker: false }}
+              value={this.state.data.files[Object.keys(this.state.data.files)].content}
+            />
+          </div>
+        </div>
+      </div >
     )
   }
 }

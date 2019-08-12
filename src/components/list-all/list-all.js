@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import Loader from '../../components/loader'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
-import "brace/theme/github";
+import "brace/mode/ruby";
+import "brace/theme/xcode";
 import { connect } from 'react-redux'
 import axios from 'axios'
 import './list-all.css'
+import { getExtension } from '../helper'
 
 class ListAll extends React.Component {
   constructor() {
@@ -77,8 +79,8 @@ class ListAll extends React.Component {
 
             <div>
               <AceEditor
-                mode="javascript"
-                theme="github"
+                mode={getExtension(Object.keys(item.files))}
+                theme="xcode"
                 width="100%"
                 maxLines={5}
                 editorProps={{ $blockScrolling: true }}

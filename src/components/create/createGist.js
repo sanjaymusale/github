@@ -9,13 +9,13 @@ import GistForm from './form';
 function CreateGist(props) {
 
   const submit = (state) => {
-    const { description, snippets } = state
+    const { description, snippets, filename } = state
     const { access_token } = props
     const data = {
       "public": true,
       "description": description,
       "files": {
-        "hello_world.js": {
+        [filename]: {
           "content": snippets
         }
       }

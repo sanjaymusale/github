@@ -18,13 +18,26 @@ function EditGist(props) {
   }
 
   const submit = (state) => {
-    const { description, snippets } = state
+    const { description, snippets, filename } = state
+    let data = {}
     const { access_token } = props
-    const data = {
-      "description": description,
-      "files": {
-        [currentGist.filename]: {
-          "content": snippets
+    if (currentGist.filename === filename) {
+      data = {
+        "description": description,
+        "files": {
+          [filename]: {
+            "content": snippets
+          }
+        }
+      }
+    } else {
+      data = {
+        "description": description,
+        "files": {
+          [currentGist.filename]: null,
+          [filename]: {
+            "content": snippets
+          }
         }
       }
     }
@@ -36,6 +49,7 @@ function EditGist(props) {
 
     axios.patch(`${GIST}/${currentGist.id}`, data, config)
       .then((res) => {
+        console.log(res.data)
         props.history.push(`/gist/${currentGist.id}`)
 
       })
@@ -45,7 +59,7 @@ function EditGist(props) {
   }
 
   return (
-    <GistForm submit={submit} title="Edit code snippets" action="Edit" data={currentGist} />
+    <GistForm submit={submit} title="Edit code snippets" action="Edit" data={currentGist} filename={currentGist.filename} />
   )
 
 }

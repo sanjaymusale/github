@@ -1,3 +1,13 @@
+.card {
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.gist {
+	width: 50%;
+}
 .gist_profile {
 	display: flex;
 	justify-content: space-between;
@@ -5,4 +15,21 @@
 
 .gist_profile .profile {
 	display: flex;
+}
+
+.profile > img {
+	margin-right: 10px;
+}
+
+.edit {
+	padding: 2px 10px;
+	color: #ffffff;
+	text-transform: uppercase;
+	outline: none;
+	border: 1px solid rgb(128, 128, 248);
+	background: rgb(64, 161, 245);
+}
+
+#Edit_editor {
+	margin-top: 20px;
 }
