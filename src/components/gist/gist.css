@@ -7,8 +7,11 @@
 
 .gist {
 	width: 50%;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
 .gist_profile {
+	padding: 5px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -32,4 +35,5 @@
 
 #Edit_editor {
 	margin-top: 20px;
+	width: 100px;
 }

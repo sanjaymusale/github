@@ -18,6 +18,24 @@
 	box-shadow: -5px -5px 8px -1px gray;
 }
 
+.profile-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.star {
+	background-color: transparent;
+	outline: none;
+	padding: 1px 5px;
+	border: 1px solid blue;
+}
+
+.unstar {
+	background-color: transparent;
+	outline: none;
+	padding: 1px 5px;
+	border: 1px solid blue;
+}
 .profile {
 	display: flex;
 }

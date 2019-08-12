@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { GIST } from '../../constants/url'
-import AceEditor from 'react-ace';
-import "brace/mode/javascript";
-import "brace/mode/ruby";
-import "brace/mode/java";
-import "brace/mode/html";
-import "brace/theme/xcode";
+import { GIST } from '../../constants/url';
 import { connect } from 'react-redux'
 import axios from 'axios'
 import './gist.css'
 import Loader from '../loader';
-import { getExtension } from '../helper'
+import Editor from '../editor'
 
 class Gist extends React.Component {
   constructor() {
@@ -21,7 +15,6 @@ class Gist extends React.Component {
       data: {},
       isLoaded: false
     }
-    this.x = []
   }
 
   componentDidMount() {
@@ -35,7 +28,7 @@ class Gist extends React.Component {
     axios.get(`${GIST}/${id}`, config)
       .then((res) => {
         this.setState({ data: res.data, isLoaded: true })
-        // console.log('gist', res.data)
+        console.log('gist', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -43,7 +36,7 @@ class Gist extends React.Component {
   }
 
   render() {
-    const { isLoaded, data } = this.state
+    const { isLoaded } = this.state
     if (!isLoaded)
       return <Loader />
 
@@ -66,16 +59,13 @@ class Gist extends React.Component {
                   data: this.state.data
                 }
               }}><button className="edit">edit</button></Link>
-              {/* <Link to={`/gist/edit/${data.id}`}><button className="edit">edit</button></Link> */}
             </div>
           </div>
           <div>
-            <AceEditor
-              mode={getExtension(Object.keys(this.state.data.files))}
-              theme="xcode"
-              width="100%"
-              maxLines={5}
+            <Editor
+              file={Object.keys(this.state.data.files)[0]}
               editorProps={{ $blockScrolling: true }}
+              maxLines={10}
               readOnly={true}
               name="Edit_editor"
               setOptions={{ useWorker: false }}

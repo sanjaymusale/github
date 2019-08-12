@@ -1,10 +1,21 @@
 .form-display {
 	display: flex;
+	margin-top: 10px;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 }
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+	border: 1px solid rgba(0, 0, 0, 0.3);
+}
 .form-display h3 {
+	text-align: center;
 	text-transform: uppercase;
 }
 .form-display input {

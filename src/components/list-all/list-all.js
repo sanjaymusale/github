@@ -2,14 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Loader from '../../components/loader'
-import AceEditor from 'react-ace';
-import "brace/mode/javascript";
-import "brace/mode/ruby";
-import "brace/theme/xcode";
 import { connect } from 'react-redux'
 import axios from 'axios'
 import './list-all.css'
-import { getExtension } from '../helper'
+import Editor from '../editor'
+import { GIST } from '../../constants/url';
 
 class ListAll extends React.Component {
   constructor() {
@@ -17,6 +14,7 @@ class ListAll extends React.Component {
     this.state = {
       data: [],
       results: [],
+      isLoaded: false
     }
   }
 
@@ -32,7 +30,7 @@ class ListAll extends React.Component {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(config)
         })
-        console.log(res.data)
+        // console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -53,15 +51,55 @@ class ListAll extends React.Component {
 
     const results = Promise.all(promises)
     results.then((res) => {
-      this.setState({ results: res })
+      console.log('fetch', res)
+      this.setState({ results: res, isLoaded: true })
     })
 
   }
 
+  starGist = (id) => {
+    const config = {
+      headers: {
+        "Authorization": `token ${this.props.access_token}`,
+        // "Content-Length": 0
+      }
+    }
+    axios.get(`${GIST}/${id}/star`, config)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  unstarGist = (id) => {
+    const config = {
+      headers: {
+        "Authorization": `token ${this.props.access_token}`
+      }
+    }
+    axios.delete(`${GIST}/${id}/star`, config)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   render() {
-    const { results } = this.state
-    if (!results.length)
+    const { results, isLoaded } = this.state
+    console.log('results', results)
+    if (!isLoaded)
       return <Loader />
+
+    if (!results.length)
+      return (
+        <div className="load_all">
+          <h3>Currently No starred Gist available</h3>
+        </div>
+      )
 
     return (
       <div className="load_all">
@@ -69,24 +107,31 @@ class ListAll extends React.Component {
           let fileKey = Object.keys(item.files)
           let code = item.files[fileKey].content
           return <div key={index} className="single_gist">
-            <div className="profile">
-              <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
+            <div className="profile-container">
+              <div className="profile">
+                <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
+                <div>
+                  <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
+                  <p>created 1 hour ago</p>
+                </div>
+              </div>
               <div>
-                <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
-                <p>created 1 hour ago</p>
+
+                {/* <button className="star" onClick={() => this.starGist(item.id)}>&#9734;&nbsp;star</button>
+                <button className="unstar" onClick={() => this.unstarGist(item.id)}>&#9733;&nbsp;unstar</button> */}
+
               </div>
             </div>
 
             <div>
-              <AceEditor
-                mode={getExtension(Object.keys(item.files))}
-                theme="xcode"
-                width="100%"
+              <Editor
+                file={Object.keys(item.files)[0]}
                 maxLines={5}
-                editorProps={{ $blockScrolling: true }}
                 readOnly={true}
                 name="ace_editor"
                 value={code}
+                width="100%"
+                editorProps={{ $blockScrolling: true }}
               />
             </div>
           </div>
