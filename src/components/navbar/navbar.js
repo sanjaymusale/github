@@ -1,5 +1,6 @@
 import React from 'react'
 import './navbar.css'
+import Icon from '../../assets/github-icon.svg'
 import { LOGIN_AUTHORIZATION } from '../../constants/url'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -9,13 +10,17 @@ class NavBar extends React.Component {
     return (
       <div className="navbar">
         <div className="header container">
-          <h2>Gist Clone</h2>
+          <div className="logo">
+            <img src={Icon} alt="" height="40px" width="40px" />
+            <span>Gist Clone</span>
+          </div>
           <div className="nav-link">
             {this.props.token ?
               <>
                 <Link className="link" to='/create'>Create</Link>
                 <Link className="link" to='/listall'>Gists</Link>
                 <Link className="link" to='/star-gist'>Starred Gist</Link>
+                <Link className="link" to='/public-gist'>Public Gist</Link>
                 <Link className="link" to='/logout'>Logout</Link>
               </>
               :
@@ -23,7 +28,7 @@ class NavBar extends React.Component {
             }
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 }

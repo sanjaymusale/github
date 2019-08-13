@@ -1,6 +1,8 @@
 import React from 'react'
 import AceEditor from 'react-ace';
 import "brace/mode/javascript";
+import "brace/mode/text";
+import "brace/mode/json";
 import "brace/mode/ruby";
 import "brace/theme/xcode";
 import PropTypes from 'prop-types'
@@ -12,7 +14,7 @@ export default function Editor(props) {
   // console.log(ext)
   return (
     <AceEditor
-      mode={ext || "javascript"}
+      mode={ext || "text"}
       theme="xcode"
       {...rest}
     />
@@ -25,11 +27,4 @@ Editor.propTypes = {
 
 
 }
-
-
-// maxLines,
-// readOnly,
-// value,
-// onChange,
-// mode,
 

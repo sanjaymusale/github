@@ -1,8 +1,9 @@
 import React from 'react'
-import './createGist.css'
 import PropTypes from 'prop-types';
 import Editor from '../editor'
+import './createGist.css'
 // import { Extensions } from '../helper'
+
 export default class GistForm extends React.Component {
   constructor(props) {
     super(props)
@@ -23,9 +24,7 @@ export default class GistForm extends React.Component {
   // }
 
   change = (e) => {
-    this.setState({ [e.target.name]: e.target.value }, () => {
-      this.validExtensions()
-    })
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   code = (newValue) => {
@@ -52,6 +51,7 @@ export default class GistForm extends React.Component {
               onChange={this.code}
               value={this.state.snippets}
               height="200px"
+              width="100%"
               name="ace_editor"
             />
           </div>

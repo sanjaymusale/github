@@ -1,15 +1,40 @@
 .load_all {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
+  height:100%;
+ 
+}
+.pagination{
+  display: flex;
+  flex-wrap: wrap;
+ 
 }
 
-.single_gist {
-	background-color: #ffffff;
-	width:80%;
-	margin: 1em;
+.pagination-action {
+ margin:1em;
+ display: flex;
+ justify-content: center;
+}
+
+.pagination-action button{
+  color: black;
+  padding: 8px 16px;
+  border:none;
+  outline:none;
+}
+
+.pagination-action button.active{
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination-action button:hover:not(.active) {background-color: rgb(241, 241, 241);}
+
+.pagination::-webkit-scrollbar {
+  display: none;
+}
+
+.public_gist {
+  width:100%;
+  margin:1em;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
 	border-bottom: 1px solid rgb(149, 149, 149);
@@ -26,25 +51,21 @@
 	justify-content: space-between;
 }
 
-.star {
-	background-color: transparent;
-	outline: none;
-	padding: 1px 5px;
-	border: 1px solid blue;
-}
-
-.unstar {
-	background-color: transparent;
-	outline: none;
-	padding: 1px 5px;
-	border: 1px solid blue;
-}
 .profile {
 	display: flex;
 }
 
+.profile > div > p{
+  word-break: break-all;
+}
+
 .profile > img {
 	margin-right: 1em;
+}
+
+.description{
+  word-break: break-all;
+  padding:5px;
 }
 
 .ace_editor {
@@ -52,16 +73,14 @@
 }
 
 .ace_scrollbar-v {
-	
 	display: none !important;
 }
 .ace_scrollbar-h {
-	
 	display: none !important;
 }
 
 @media screen and (max-width: 425px) {
-	.single_gist {
-		width: 100%;
+	.public_gist {
+		width: 90%;
 	}
 }

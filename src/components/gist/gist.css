@@ -1,13 +1,11 @@
 .card {
 	margin-top: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	
 }
 
 .gist {
-	width: 50%;
 	border: 1px solid rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.03);
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
 .gist_profile {
@@ -33,7 +31,19 @@
 	background: rgb(64, 161, 245);
 }
 
-#Edit_editor {
+.description {
+	padding: 5px;
+	border-top: 1px solid rgb(128, 128, 248, 0.3);
+}
+
+.ace_editor {
 	margin-top: 20px;
 	width: 100px;
+}
+
+.ace_scrollbar-v {
+	display: none !important;
+}
+.ace_scrollbar-h {
+	display: none !important;
 }

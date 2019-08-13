@@ -10,6 +10,8 @@ const Logout = lazy(() => import('./components/auth/logout'))
 const Gist = lazy(() => import('./components/gist/gist'))
 const EditGist = lazy(() => import('./components/create/editGist'));
 const Starred = lazy(() => import('./components/list-all/starred'));
+const Home = lazy(() => import('./home'))
+const PublicGist = lazy(() => import('./components/list-all/public'))
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
       <AppLayout>
         <Suspense fallback={<Loading />}>
           <Switch>
+            <Route path='/' component={Home} exact />
             <Route path='/login' component={Login} />
             <Route path='/logout' component={Logout} exact />
             <Route path='/listall' component={AllGist} exact />
@@ -25,6 +28,7 @@ function App() {
             <Route path='/create' component={CreateGist} exact />
             <Route path='/gist/current/edit' component={EditGist} exact />
             <Route path='/star-gist' component={Starred} exact />
+            <Route path='/public-gist' component={PublicGist} exact />
           </Switch>
         </Suspense>
       </AppLayout>

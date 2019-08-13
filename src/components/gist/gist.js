@@ -36,7 +36,12 @@ class Gist extends React.Component {
   }
 
   render() {
-    const { isLoaded } = this.state
+    const { isLoaded, data } = this.state
+    let Editable = true
+    if (this.props.location.state) {
+      Editable = this.props.location.state.Editable
+    }
+
     if (!isLoaded)
       return <Loader />
 
@@ -45,31 +50,36 @@ class Gist extends React.Component {
         <div className="gist">
           <div className="gist_profile">
             <div className="profile">
-              <img alt="" src={this.state.data.owner.avatar_url} height="35px" width="35px" />
+              <img alt="" src={data.owner.avatar_url} height="35px" width="35px" />
               <div>
-                <p>{this.state.data.owner.login} / {Object.keys(this.state.data.files)}</p>
+                <p>{data.owner.login} / {Object.keys(data.files)}</p>
                 <p>created 1 hour ago</p>
               </div>
             </div>
-            <div>
-
-              <Link to={{
-                pathname: `/gist/current/edit`,
-                state: {
-                  data: this.state.data
-                }
-              }}><button className="edit">edit</button></Link>
-            </div>
+            {Editable &&
+              <div>
+                <Link to={{
+                  pathname: `/gist/current/edit`,
+                  state: {
+                    data: data
+                  }
+                }}><button className="edit">edit</button></Link>
+              </div>
+            }
+          </div>
+          <div className="description">
+            <p>{data.description}</p>
           </div>
           <div>
             <Editor
-              file={Object.keys(this.state.data.files)[0]}
+              file={Object.keys(data.files)[0]}
               editorProps={{ $blockScrolling: true }}
-              maxLines={10}
+              width="100%"
+              minLines={5}
               readOnly={true}
-              name="Edit_editor"
+              name="ace_editor"
               setOptions={{ useWorker: false }}
-              value={this.state.data.files[Object.keys(this.state.data.files)].content}
+              value={data.files[Object.keys(data.files)[0]].content}
             />
           </div>
         </div>

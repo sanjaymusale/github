@@ -5,6 +5,7 @@ import { logout_success } from '../actions/auth'
 function Logout(props) {
   (() => {
     props.logout_success()
+    props.history.push('/')
   })()
 
   return (<></>)

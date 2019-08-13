@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import './list-all.css'
 import Editor from '../editor'
-import { GIST } from '../../constants/url';
+// import { GIST } from '../../constants/url';
 
 class ListAll extends React.Component {
   constructor() {
@@ -30,7 +30,7 @@ class ListAll extends React.Component {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(config)
         })
-        // console.log(res.data)
+        console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -57,36 +57,36 @@ class ListAll extends React.Component {
 
   }
 
-  starGist = (id) => {
-    const config = {
-      headers: {
-        "Authorization": `token ${this.props.access_token}`,
-        // "Content-Length": 0
-      }
-    }
-    axios.get(`${GIST}/${id}/star`, config)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  // starGist = (id) => {
+  //   const config = {
+  //     headers: {
+  //       "Authorization": `token ${this.props.access_token}`,
+  //       // "Content-Length": 0
+  //     }
+  //   }
+  //   axios.get(`${GIST}/${id}/star`, config)
+  //     .then((res) => {
+  //       console.log(res)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
-  unstarGist = (id) => {
-    const config = {
-      headers: {
-        "Authorization": `token ${this.props.access_token}`
-      }
-    }
-    axios.delete(`${GIST}/${id}/star`, config)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  // unstarGist = (id) => {
+  //   const config = {
+  //     headers: {
+  //       "Authorization": `token ${this.props.access_token}`
+  //     }
+  //   }
+  //   axios.delete(`${GIST}/${id}/star`, config)
+  //     .then((res) => {
+  //       console.log(res)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
   render() {
     const { results, isLoaded } = this.state
@@ -104,7 +104,7 @@ class ListAll extends React.Component {
     return (
       <div className="load_all">
         {this.state.results.map((item, index) => {
-          let fileKey = Object.keys(item.files)
+          let fileKey = Object.keys(item.files)[0]
           let code = item.files[fileKey].content
           return <div key={index} className="single_gist">
             <div className="profile-container">
@@ -126,9 +126,10 @@ class ListAll extends React.Component {
             <div>
               <Editor
                 file={Object.keys(item.files)[0]}
-                maxLines={4}
+                maxLines={8}
                 useWrapMode={true}
                 readOnly={true}
+                highlightActiveLine={false}
                 name="ace_editor"
                 value={code}
                 width="100%"
