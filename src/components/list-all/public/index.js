@@ -34,7 +34,6 @@ class PublicGist extends React.Component {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(this.config)
         })
-        console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -67,11 +66,8 @@ class PublicGist extends React.Component {
     const { data } = this.state
 
     const promises = data.map(async repo => {
-
       const response = await axios.get(repo.url, config)
-
       return response.data
-
     })
 
     const results = Promise.all(promises)
@@ -82,7 +78,7 @@ class PublicGist extends React.Component {
   }
 
   render() {
-    const { results, isLoaded, inititalPage, lastPage } = this.state
+    const { results, isLoaded, inititalPage, lastPage, pagination } = this.state
     if (!isLoaded)
       return <Loader />
 
@@ -144,18 +140,18 @@ class PublicGist extends React.Component {
         </div>
         <div className="pagination-action">
           <Link to={`/public-gist/${inititalPage - 5}`}>
-            <button disabled={this.state.inititalPage === 1}>&laquo;</button>
+            <button disabled={inititalPage === 1}>&laquo;</button>
           </Link>
 
-          {this.state.pagination.slice(inititalPage, lastPage + 1).map((item, index) => {
-            const currentPage = Number(this.state.currentPage)
+          {pagination.slice(inititalPage, lastPage + 1).map((item, index) => {
+            const currentPage = parseInt(this.state.currentPage)
             if (currentPage === item)
               return <button key={index} className="active" id={item} >{item}</button>
             return <Link key={index} to={`/public-gist/${item}`}><button id={item}>{item}</button></Link>
           })}
 
           <Link to={`/public-gist/${lastPage + 1}`}>
-            <button disabled={!this.state.pagination.includes(this.state.lastPage)}>&raquo;</button>
+            <button disabled={!pagination.includes(lastPage)}>&raquo;</button>
           </Link>
         </div>
 
