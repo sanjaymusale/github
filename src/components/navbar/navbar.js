@@ -20,7 +20,7 @@ class NavBar extends React.Component {
                 <Link className="link" to='/create'>Create</Link>
                 <Link className="link" to='/listall'>Gists</Link>
                 <Link className="link" to='/star-gist'>Starred Gist</Link>
-                <Link className="link" to='/public-gist'>Public Gist</Link>
+                <Link className="link" to='/public-gist/1'>Public Gist</Link>
                 <Link className="link" to='/logout'>Logout</Link>
               </>
               :

@@ -28,7 +28,7 @@ function App() {
             <Route path='/create' component={CreateGist} exact />
             <Route path='/gist/current/edit' component={EditGist} exact />
             <Route path='/star-gist' component={Starred} exact />
-            <Route path='/public-gist' component={PublicGist} exact />
+            <Route path='/public-gist/:id' component={PublicGist} exact />
           </Switch>
         </Suspense>
       </AppLayout>

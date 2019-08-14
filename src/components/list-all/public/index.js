@@ -15,10 +15,10 @@ class PublicGist extends React.Component {
       data: [],
       results: [],
       isLoaded: false,
-      pagination: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      currentPage: 1,
-      inititalPage: 0,
-      lastPage: 5,
+      pagination: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+      currentPage: parseInt(this.props.match.params.id),
+      inititalPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id - 4 : Math.floor(this.props.match.params.id / 5) * 5 + 1),
+      lastPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id : Math.floor(this.props.match.params.id / 5) * 5 + 5),
 
     }
     this.config = {
@@ -28,8 +28,8 @@ class PublicGist extends React.Component {
     }
   }
 
-  componentDidMount() {
-    axios.get(`${GIST}/public?page=1&per_page=10`, this.config)
+  fetch = (currentPage) => {
+    axios.get(`${GIST}/public?page=${currentPage}&per_page=10`, this.config)
       .then((res) => {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(this.config)
@@ -41,8 +41,29 @@ class PublicGist extends React.Component {
       })
   }
 
+  componentDidMount() {
+    this.fetch(this.state.currentPage)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { id } = prevProps.match.params
+    if (id !== this.props.match.params.id) {
+      this.fetch(id)
+    }
+
+    if (prevState.currentPage !== parseInt(id)) {
+      this.setState({
+        currentPage: parseInt(id),
+        inititalPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id - 4 : Math.floor(this.props.match.params.id / 5) * 5 + 1),
+        lastPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id : Math.floor(this.props.match.params.id / 5) * 5 + 5),
+      })
+    }
+  }
+
+
 
   fetchRepoInfos = (config) => {
+    this.setState({ isLoaded: false })
     const { data } = this.state
 
     const promises = data.map(async repo => {
@@ -60,55 +81,6 @@ class PublicGist extends React.Component {
 
   }
 
-  fetchNext = (e) => {
-    this.setState({ isLoaded: false })
-    const id = e.target.id
-    axios.get(`${GIST}/public?page=${id}&per_page=10`)
-      .then((res) => {
-        this.setState({ data: res.data, currentPage: Number(id) }, () => {
-          this.fetchRepoInfos(this.config)
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
-  fetch = () => {
-    this.setState({ isLoaded: false })
-    const { cuurentPage: id } = this.state
-    axios.get(`${GIST}/public?page=${id}&per_page=10`)
-      .then((res) => {
-        console.log('fetch last', res.data)
-        this.setState({ data: res.data }, () => {
-          this.fetchRepoInfos(this.config)
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
-  checkNext = () => {
-    const { lastPage, pagination } = this.state
-    if (pagination.indexOf(lastPage) !== pagination.length - 1)
-      this.setState((prev) => ({
-        inititalPage: prev.lastPage,
-        lastPage: prev.lastPage + 5,
-        currentPage: prev.lastPage + 1
-      }), () => { this.fetch() })
-  }
-
-  checkPrev = () => {
-    const { inititalPage, pagination } = this.state
-    if (pagination.indexOf(inititalPage) !== -1)
-      this.setState((prev) => ({
-        inititalPage: prev.inititalPage - 5,
-        lastPage: prev.lastPage - 5,
-        currentPage: prev.inititalPage,
-      }), () => { this.fetch() })
-  }
-
   render() {
     const { results, isLoaded, inititalPage, lastPage } = this.state
     if (!isLoaded)
@@ -117,12 +89,9 @@ class PublicGist extends React.Component {
     if (!results.length)
       return (
         <div className="load_all">
-          <h3>Currently No starred Gist available</h3>
+          <h3>Currently Public Gist available</h3>
         </div>
       )
-    // if (isLoaded) {
-    //   window.scrollTo(100, 100)
-    // }
 
     return (
       <div className="load_all">
@@ -174,14 +143,20 @@ class PublicGist extends React.Component {
           }
         </div>
         <div className="pagination-action">
-          <button onClick={this.checkPrev}>&laquo;</button>
-          {this.state.pagination.slice(inititalPage, lastPage).map((item, index) => {
-            const currentPage = this.state.currentPage
+          <Link to={`/public-gist/${inititalPage - 5}`}>
+            <button disabled={this.state.inititalPage === 1}>&laquo;</button>
+          </Link>
+
+          {this.state.pagination.slice(inititalPage, lastPage + 1).map((item, index) => {
+            const currentPage = Number(this.state.currentPage)
             if (currentPage === item)
-              return <button key={index} className="active" id={item} onClick={this.fetchNext}>{item}</button>
-            return <button key={index} id={item} onClick={this.fetchNext}>{item}</button>
+              return <button key={index} className="active" id={item} >{item}</button>
+            return <Link key={index} to={`/public-gist/${item}`}><button id={item}>{item}</button></Link>
           })}
-          <button onClick={this.checkNext}>&raquo;</button>
+
+          <Link to={`/public-gist/${lastPage + 1}`}>
+            <button disabled={!this.state.pagination.includes(this.state.lastPage)}>&raquo;</button>
+          </Link>
         </div>
 
       </div>
