@@ -61,6 +61,7 @@ class PublicGist extends React.Component {
   }
 
   fetchNext = (e) => {
+    this.setState({ isLoaded: false })
     const id = e.target.id
     axios.get(`${GIST}/public?page=${id}&per_page=10`)
       .then((res) => {
@@ -74,6 +75,7 @@ class PublicGist extends React.Component {
   }
 
   fetch = () => {
+    this.setState({ isLoaded: false })
     const { cuurentPage: id } = this.state
     axios.get(`${GIST}/public?page=${id}&per_page=10`)
       .then((res) => {
@@ -108,8 +110,7 @@ class PublicGist extends React.Component {
   }
 
   render() {
-    const { results, isLoaded, inititalPage, currentPage, lastPage } = this.state
-    console.log(this.config)
+    const { results, isLoaded, inititalPage, lastPage } = this.state
     if (!isLoaded)
       return <Loader />
 
@@ -119,6 +120,9 @@ class PublicGist extends React.Component {
           <h3>Currently No starred Gist available</h3>
         </div>
       )
+    // if (isLoaded) {
+    //   window.scrollTo(100, 100)
+    // }
 
     return (
       <div className="load_all">
