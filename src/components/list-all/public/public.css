@@ -59,9 +59,25 @@
   word-break: break-all;
 }
 
+
 .profile > img {
 	margin-right: 1em;
 }
+
+.block{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
+	background:rgba(0,0,0,0.04);
+}
+.block button{
+	padding:5px 20px;
+	color:black;
+	outline:none;
+	border:none;
+}
+
 
 .description{
   word-break: break-all;

@@ -8,13 +8,15 @@ import './public.css'
 import Editor from '../../editor'
 import { GIST } from '../../../constants/url';
 
-class PublicGist extends React.Component {
+class LoadMoreGist extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       data: [],
       results: [],
       isLoaded: false,
+      requestLoading: false,
+      currentCard: 0,
       pagination: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
       currentPage: parseInt(this.props.match.params.id),
       inititalPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id - 4 : Math.floor(this.props.match.params.id / 5) * 5 + 1),
@@ -31,9 +33,10 @@ class PublicGist extends React.Component {
   fetch = (currentPage) => {
     axios.get(`${GIST}/public?page=${currentPage}&per_page=10`, this.config)
       .then((res) => {
-        this.setState({ data: res.data }, () => {
-          this.fetchRepoInfos(this.config)
+        this.setState({ data: res.data, isLoaded: true }, () => {
+          this.fetchRepoInfos()
         })
+        console.log('initial', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -41,7 +44,7 @@ class PublicGist extends React.Component {
   }
 
   componentDidMount() {
-    this.fetch(this.state.currentPage)
+    this.fetch(1)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -61,40 +64,66 @@ class PublicGist extends React.Component {
 
 
 
-  fetchRepoInfos = (config) => {
+  fetchRepoInfos = () => {
     this.setState({ isLoaded: false })
     const { data } = this.state
 
-    const promises = data.map(async repo => {
-      const response = await axios.get(repo.url, config)
-      return response.data
+    const promises = data.map(async (repo, index) => {
+      if (index < 2) {
+        console.log(index)
+        const response = await axios.get(repo.url, this.config)
+        return response.data
+      }
+      else {
+        return repo
+      }
     })
-
     const results = Promise.all(promises)
     results.then((res) => {
+      console.log(res)
       this.setState({ results: res, isLoaded: true })
     })
+  }
 
+  fetchonRequest = (e) => {
+    const id = parseInt(e.target.id)
+    this.setState({ requestLoading: true, currentCard: id })
+    const { results } = this.state
+
+    console.log('id', id)
+    const url = results[id].url
+
+    axios.get(url, this.config)
+      .then((res) => {
+        const { data } = res
+        console.log(data)
+        results.splice(id, 1, data)
+        this.setState({ results, requestLoading: false })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   render() {
-    const { results, isLoaded, inititalPage, lastPage, pagination } = this.state
+    const { results, data, isLoaded, inititalPage, lastPage, pagination, requestLoading, currentCard } = this.state
+
     if (!isLoaded)
       return <Loader />
 
-    if (!results.length)
+    if (!data.length)
       return (
         <div className="load_all">
-          <h3>Currently Public Gist available</h3>
+          <h3>Currently Public Gist Not available</h3>
         </div>
       )
 
     return (
       <div className="load_all">
         <div className="pagination">
-          {this.state.results.map((item, index) => {
+          {results.map((item, index) => {
             let fileKey = Object.keys(item.files)[0]
-            let code = item.files[fileKey].content
+            // let code = item.files[fileKey].content
             return <div key={index} className="public_gist">
               <div className="profile-container">
                 <div className="profile">
@@ -121,17 +150,37 @@ class PublicGist extends React.Component {
                 <p>{item.description ? item.description.slice(0, 100) : item.description}</p>
               </div>
 
+              {currentCard === index && !item.files[fileKey].content ?
 
-              <Editor
-                file={Object.keys(item.files)[0]}
-                maxLines={10}
-                useWrapMode={true}
-                readOnly={true}
-                name="ace_editor"
-                value={code}
-                width="100%"
-                editorProps={{ $blockScrolling: true }}
-              />
+                requestLoading
+                  ? <Loader nomargin size="50px" />
+                  : <Editor
+                    file={Object.keys(item.files)[0]}
+                    maxLines={10}
+                    useWrapMode={true}
+                    readOnly={true}
+                    name="ace_editor"
+                    value={item.files[fileKey].content}
+                    width="100%"
+                    editorProps={{ $blockScrolling: true }}
+                  />
+
+                : !item.files[fileKey].content
+                  ?
+                  <div className="block">
+                    <button onClick={this.fetchonRequest} id={index}>View</button>
+                  </div>
+                  : <Editor
+                    file={Object.keys(item.files)[0]}
+                    maxLines={10}
+                    useWrapMode={true}
+                    readOnly={true}
+                    name="ace_editor"
+                    value={item.files[fileKey].content}
+                    width="100%"
+                    editorProps={{ $blockScrolling: true }}
+                  />
+              }
 
             </div>
           })
@@ -160,7 +209,7 @@ class PublicGist extends React.Component {
   }
 }
 
-PublicGist.propTypes = {
+LoadMoreGist.propTypes = {
   access_token: PropTypes.string.isRequired,
 }
 
@@ -168,4 +217,4 @@ export default connect((state) => {
   return {
     access_token: state.Auth.access_token
   }
-})(PublicGist)
+})(LoadMoreGist)
