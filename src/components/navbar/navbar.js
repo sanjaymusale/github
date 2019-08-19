@@ -11,8 +11,9 @@ class NavBar extends React.Component {
       <div className="navbar">
         <div className="header container">
           <div className="logo">
-            <img src={Icon} alt="" height="40px" width="40px" />
-            <span>Gist Clone</span>
+            <Link to="/"><img src={Icon} alt="" height="40px" width="40px" /></Link>
+            <Link to="/" className="name"><span>Gist Clone</span></Link>
+
           </div>
           <div className="nav-link">
             {this.props.token ?

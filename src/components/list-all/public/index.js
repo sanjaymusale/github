@@ -31,12 +31,12 @@ class LoadMoreGist extends React.Component {
   }
 
   fetch = (currentPage) => {
-    axios.get(`${GIST}/public?page=${currentPage}&per_page=10`, this.config)
+    axios.get(`${GIST}/public?page=${currentPage}&per_page=30`, this.config)
       .then((res) => {
         this.setState({ data: res.data, isLoaded: true }, () => {
           this.fetchRepoInfos()
         })
-        console.log('initial', res.data)
+        // console.log('initial', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -44,7 +44,7 @@ class LoadMoreGist extends React.Component {
   }
 
   componentDidMount() {
-    this.fetch(1)
+    this.fetch(this.state.currentPage)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,6 +58,7 @@ class LoadMoreGist extends React.Component {
         currentPage: parseInt(id),
         inititalPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id - 4 : Math.floor(this.props.match.params.id / 5) * 5 + 1),
         lastPage: parseInt((this.props.match.params.id % 5 === 0) ? this.props.match.params.id : Math.floor(this.props.match.params.id / 5) * 5 + 5),
+        currentCard: 0
       })
     }
   }
@@ -70,7 +71,6 @@ class LoadMoreGist extends React.Component {
 
     const promises = data.map(async (repo, index) => {
       if (index < 2) {
-        console.log(index)
         const response = await axios.get(repo.url, this.config)
         return response.data
       }
@@ -90,13 +90,13 @@ class LoadMoreGist extends React.Component {
     this.setState({ requestLoading: true, currentCard: id })
     const { results } = this.state
 
-    console.log('id', id)
+    // console.log('id', id)
     const url = results[id].url
 
     axios.get(url, this.config)
       .then((res) => {
         const { data } = res
-        console.log(data)
+        // console.log(data)
         results.splice(id, 1, data)
         this.setState({ results, requestLoading: false })
       })
@@ -123,7 +123,6 @@ class LoadMoreGist extends React.Component {
         <div className="pagination">
           {results.map((item, index) => {
             let fileKey = Object.keys(item.files)[0]
-            // let code = item.files[fileKey].content
             return <div key={index} className="public_gist">
               <div className="profile-container">
                 <div className="profile">
