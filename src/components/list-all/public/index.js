@@ -80,7 +80,6 @@ class LoadMoreGist extends React.Component {
     })
     const results = Promise.all(promises)
     results.then((res) => {
-      console.log(res)
       this.setState({ results: res, isLoaded: true })
     })
   }
@@ -107,7 +106,6 @@ class LoadMoreGist extends React.Component {
 
   render() {
     const { results, data, isLoaded, inititalPage, lastPage, pagination, requestLoading, currentCard } = this.state
-
     if (!isLoaded)
       return <Loader />
 
@@ -160,7 +158,7 @@ class LoadMoreGist extends React.Component {
                     readOnly={true}
                     name="ace_editor"
                     value={item.files[fileKey].content}
-                    width="100%"
+                    width="99%"
                     editorProps={{ $blockScrolling: true }}
                   />
 
@@ -176,7 +174,7 @@ class LoadMoreGist extends React.Component {
                     readOnly={true}
                     name="ace_editor"
                     value={item.files[fileKey].content}
-                    width="100%"
+                    width="99%"
                     editorProps={{ $blockScrolling: true }}
                   />
               }

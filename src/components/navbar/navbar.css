@@ -30,6 +30,11 @@
 	align-items: center;
 }
 
+.nav-link .active{
+	border-bottom:2px solid black;
+	color: rgb(0, 0, 0);
+}
+
 .logo > .name {
 	font-size: 22px;
 	font-weight: bolder;

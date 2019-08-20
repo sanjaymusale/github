@@ -13,7 +13,7 @@ const Starred = lazy(() => import('./components/list-all/starred'));
 const Home = lazy(() => import('./home'))
 const LoadMoreGist = lazy(() => import('./components/list-all/public'))
 
-function App() {
+function App(props) {
   return (
     <BrowserRouter>
       <NavBar />

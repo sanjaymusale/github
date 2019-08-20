@@ -9,8 +9,8 @@ import Editor from '../editor'
 // import { GIST } from '../../constants/url';
 
 class ListAll extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       data: [],
       results: [],
@@ -30,7 +30,7 @@ class ListAll extends React.Component {
         this.setState({ data: res.data }, () => {
           this.fetchRepoInfos(config)
         })
-        console.log(res)
+        // console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -51,46 +51,14 @@ class ListAll extends React.Component {
 
     const results = Promise.all(promises)
     results.then((res) => {
-      console.log('fetch', res)
+      // console.log('fetch', res)
       this.setState({ results: res, isLoaded: true })
     })
 
   }
 
-  // starGist = (id) => {
-  //   const config = {
-  //     headers: {
-  //       "Authorization": `token ${this.props.access_token}`,
-  //       // "Content-Length": 0
-  //     }
-  //   }
-  //   axios.get(`${GIST}/${id}/star`, config)
-  //     .then((res) => {
-  //       console.log(res)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
-
-  // unstarGist = (id) => {
-  //   const config = {
-  //     headers: {
-  //       "Authorization": `token ${this.props.access_token}`
-  //     }
-  //   }
-  //   axios.delete(`${GIST}/${id}/star`, config)
-  //     .then((res) => {
-  //       console.log(res)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
-
   render() {
     const { results, isLoaded } = this.state
-    console.log('results', results)
     if (!isLoaded)
       return <Loader />
 
@@ -114,12 +82,6 @@ class ListAll extends React.Component {
                   <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
                   <p>created 1 hour ago</p>
                 </div>
-              </div>
-              <div>
-
-                {/* <button className="star" onClick={() => this.starGist(item.id)}>&#9734;&nbsp;star</button>
-                <button className="unstar" onClick={() => this.unstarGist(item.id)}>&#9733;&nbsp;unstar</button> */}
-
               </div>
             </div>
 
