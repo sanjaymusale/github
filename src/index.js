@@ -1,26 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/global.css'
-import App from './App';
-import { Provider } from 'react-redux'
-import { configureStore } from '../src/store/configure'
+import './styles/global.css';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import Loader from './components/loader'
-const { store, persistor } = configureStore()
+import App from './App';
+import { configureStore } from './store/configure';
+import Loader from './components/loader';
+
+const { store, persistor } = configureStore();
 
 store.subscribe(() => {
-  console.log(store.getState())
-})
+  console.log(store.getState());
+});
 
-const app = (
+const app = 
   <Provider store={store}>
-    <PersistGate loading={<Loader />} persistor={persistor} >
+    <PersistGate loading={<Loader />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>
-)
+;
 
 
 ReactDOM.render(app, document.getElementById('root'));
-
-

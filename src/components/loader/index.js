@@ -1,16 +1,16 @@
 import React from 'react';
-import Loading from '../../assets/loading.svg'
-import './loader.css'
+import Loading from '../../assets/loading.svg';
+import './loader.css';
 
 export default function Loader({ nomargin, size }) {
   return (
-    <div className={nomargin ? "loader" : "loader margin"}>
-      <img src={Loading} alt="Loading..." height={size} width={size}></img>
+    <div className={nomargin ? 'loader' : 'loader margin'}>
+      <img src={Loading} alt="Loading..." height={size} width={size} />
       <h4>Processing...</h4>
-    </div >
-  )
+    </div>
+  );
 }
 
 Loader.defaultProps = {
-  size: "100px"
-}
+  size: '100px',
+};

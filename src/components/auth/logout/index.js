@@ -1,17 +1,17 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { logout_success } from '../actions/auth'
+import React from 'react';
+import { connect } from 'react-redux';
+import { logout_success } from '../actions/auth';
 
 function Logout(props) {
   (() => {
-    props.logout_success()
-    props.history.push('/')
-  })()
+    props.logout_success();
+    props.history.push('/');
+  })();
 
-  return (<></>)
+  return <></>;
 }
 
 const mapDispatchToProps = {
-  logout_success
-}
-export default connect(null, mapDispatchToProps)(Logout)
+  logout_success,
+};
+export default connect(null, mapDispatchToProps)(Logout);

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import './list-all.css'
-import Editor from '../editor'
-import Loader from '../../components/loader'
+import './list-all.css';
 import { Link } from 'react-router-dom';
+import Editor from '../editor';
+import Loader from '../loader';
 
 function ListAll(props) {
   const [data, setData] = useState([]);
@@ -14,102 +14,99 @@ function ListAll(props) {
   useEffect(() => {
     const config = {
       headers: {
-        "Authorization": `token ${props.access_token}`
-      }
-    }
+        Authorization: `token ${props.access_token}`,
+      },
+    };
 
-    const { url } = props
+    const { url } = props;
 
     axios.get(url, config)
       .then((res) => {
-        setData(res.data)
+        setData(res.data);
       })
       .catch((err) => {
-        console.log(err)
-      })
-
-  }, [props])
+        console.log(err);
+      });
+  }, [props]);
 
   useEffect(() => {
     const config = {
       headers: {
-        "Authorization": `token ${props.access_token}`
-      }
-    }
+        Authorization: `token ${props.access_token}`,
+      },
+    };
     const fetchRepoInfos = () => {
+      const promises = data.map(async (repo) => {
+        const response = await axios.get(repo.url, config);
+        return response.data;
+      });
 
-      const promises = data.map(async repo => {
-        const response = await axios.get(repo.url, config)
-        return response.data
-
-      })
-
-      const results = Promise.all(promises)
+      const results = Promise.all(promises);
       results.then((res) => {
-        setIsLoaded(true)
-        setResults(res)
+        setIsLoaded(true);
+        setResults(res);
       })
         .catch((err) => {
-          setIsLoaded(false)
-        })
-
-    }
-    if (data.length)
-      fetchRepoInfos()
-  }, [props.access_token, data])
+          setIsLoaded(false);
+        });
+    };
+    if (data.length) fetchRepoInfos();
+  }, [props.access_token, data]);
 
 
+  if (!isLoaded) return <Loader />;
 
-  if (!isLoaded)
-    return <Loader />
-
-  if (!results.length)
+  if (!results.length) {
     return (
       <div className="load_all">
         <h3>Currently No starred Gist available</h3>
       </div>
-    )
+    );
+  }
 
   return (
     <div className="load_all">
       {results.map((item, index) => {
-        let fileKey = Object.keys(item.files)[0]
-        let code = item.files[fileKey].content
-        return <div key={index} className="single_gist">
-          <div className="profile-container">
-            <div className="profile">
-              <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
-              <div>
-                <p>{item.owner.login} / <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link></p>
-                <p>created 1 hour ago</p>
+        const fileKey = Object.keys(item.files)[0];
+        const code = item.files[fileKey].content;
+        return (
+          <div key={index} className="single_gist">
+            <div className="profile-container">
+              <div className="profile">
+                <img alt="" src={item.owner.avatar_url} height="35px" width="35px" />
+                <div>
+                  <p>
+                    {item.owner.login}
+                    {' '}
+/
+                    {' '}
+                    <Link to={`/gist/${item.id}`} className="link">{Object.keys(item.files)}</Link>
+                  </p>
+                  <p>created 1 hour ago</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div>
-            <Editor
-              file={Object.keys(item.files)[0]}
-              maxLines={8}
-              useWrapMode={true}
-              readOnly={true}
-              highlightActiveLine={false}
-              name="ace_editor"
-              value={code}
-              width="100%"
-              editorProps={{ $blockScrolling: true }}
-            />
+            <div>
+              <Editor
+                file={Object.keys(item.files)[0]}
+                maxLines={8}
+                useWrapMode
+                readOnly
+                highlightActiveLine={false}
+                name="ace_editor"
+                value={code}
+                width="100%"
+                editorProps={{ $blockScrolling: true }}
+              />
+            </div>
           </div>
-        </div>
-      })
-
-      }
+        );
+      })}
     </div>
-  )
-
+  );
 }
 
-export default connect((state) => {
-  return {
-    access_token: state.Auth.access_token
-  }
-})(ListAll)
+export default connect((state) => ({
+  access_token: state.Auth.access_token,
+}))(ListAll);

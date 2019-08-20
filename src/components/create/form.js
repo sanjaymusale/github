@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import Editor from '../editor'
-import './createGist.css'
+import Editor from '../editor';
+import './createGist.css';
 // import { Extensions } from '../helper'
 
 export default class GistForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       snippets: props.data ? props.data.content : '',
       description: props.data ? props.data.description : '',
       filename: props.filename || '',
-    }
+    };
   }
 
   // validExtensions = () => {
@@ -24,11 +24,11 @@ export default class GistForm extends React.Component {
   // }
 
   change = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   code = (newValue) => {
-    this.setState({ snippets: newValue })
+    this.setState({ snippets: newValue });
   }
 
   render() {
@@ -47,7 +47,7 @@ export default class GistForm extends React.Component {
           </div>
           <div>
             <Editor
-              file={this.state.filename || "code_snippet.js"}
+              file={this.state.filename || 'code_snippet.js'}
               onChange={this.code}
               value={this.state.snippets}
               height="200px"
@@ -57,8 +57,8 @@ export default class GistForm extends React.Component {
           </div>
           <button onClick={() => this.props.submit(this.state)} className="button">{this.props.action}</button>
         </div>
-      </div >
-    )
+      </div>
+    );
   }
 }
 
@@ -66,5 +66,5 @@ GistForm.propTypes = {
   submit: PropTypes.func.isRequired,
   action: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  data: PropTypes.object
-}
+  data: PropTypes.object,
+};
