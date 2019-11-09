@@ -9,17 +9,13 @@ import Loader from './components/loader';
 
 const { store, persistor } = configureStore();
 
-store.subscribe(() => {
-  console.log(store.getState());
-});
-
-const app = 
+const app =
   <Provider store={store}>
     <PersistGate loading={<Loader />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>
-;
+  ;
 
 
 ReactDOM.render(app, document.getElementById('root'));
